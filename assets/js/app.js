@@ -9,6 +9,8 @@ let currentSearch = [];
 
 let albums = [];
 
+let showAlbumsButtonState = false;
+
 // display selected items on the left on click of Add button
 searchArtistList.addEventListener('click', (e) => {
     if (e.target.id.length === 1) {
@@ -30,7 +32,18 @@ chosenArtistsList.addEventListener('click', (e) => {
             document.querySelector(`#${albumList.id}`).remove();
         }
 
-        e.target.parentElement.parentElement.parentElement.append(albumList);
+        e.target.parentElement.append(albumList);
+        if (e.target.innerText === 'Show Albums') {
+            e.target.classList.remove('btn-success');
+            e.target.classList.add('btn-danger');
+            e.target.innerText = 'Hide Albums';
+            e.target.nextElementSibling.classList.remove('d-none');
+        } else {
+            e.target.classList.add('btn-success');
+            e.target.classList.remove('btn-danger');
+            e.target.innerText = 'Show Albums';
+            e.target.nextElementSibling.classList.add('d-none');
+        }
         showAlbums(artistID, albumList);
     }
 
@@ -59,8 +72,9 @@ function showArtistSearchResults(artists) {
         const artistListItem = document.createElement('LI');
         const artistNameParagraph = document.createElement('P');
         const artistSelectButton = document.createElement('BUTTON');
+
         artistSelectButton.classList.add('add-button', 'btn', 'btn-primary');
-        artistListItem.classList.add('artist-search-result');
+        artistListItem.classList.add('artist-search-result', 'list-group-item');
         artistSelectButton.id = `${i}`;
         artistNameParagraph.innerText = artistName;
         artistNameParagraph.style.display = 'inline-block';
@@ -78,19 +92,16 @@ function pushArtistInfo(artist) {
 function displaySelectedItems() {
     for (let i = 0; i < selectedArtists.length; i++) {
         const artistListItem = document.createElement('LI');
-        artistListItem.classList.add('artist-list-item');
+        artistListItem.classList.add('artist-list-item', 'list-group-item');
         const artistNameParagraph = document.createElement('P');
         const artistSelectButton = document.createElement('BUTTON');
-
-        artistListItem.classList.add('list-group-item');
-        artistSelectButton.classList.add('btn', 'btn-success', 'btn-sm');
-        artistNameParagraph.innerText = selectedArtists[i].name;
-        artistSelectButton.id = `selected-artist-${i}`;
+        artistSelectButton.classList.add('btn', 'btn-sm', 'mb-3', 'btn-success');
         artistSelectButton.innerText = 'Show Albums';
+        artistSelectButton.id = `selected-artist-${i}`;
+        artistNameParagraph.innerText = selectedArtists[i].name;
         artistListItem.append(artistNameParagraph);
         artistListItem.append(artistSelectButton);
         chosenArtistsList.append(artistListItem);
-
     }
 }
 
@@ -104,10 +115,10 @@ function showAlbums(artistId, list) {
             list.innerHTML = '';
             for (release of data.data) {
                 const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
                 listItem.innerHTML = `${release.release_date} - ${release.title}`;
                 list.append(listItem);
                 albums.push(release);
-
             }
         });
 }

@@ -46,6 +46,8 @@ aside label[for="search-input"] {
 .artist-list-item {
     display: flex;
     justify-content: flex-start;
+    width: 100%;
+    flex-direction: column;
 }
 
 .artist-list-item p {
