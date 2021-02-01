@@ -8,6 +8,8 @@ const selectedArtists = [];
 
 let currentSearch = [];
 
+let albums = [];
+
 searchArtistList.addEventListener('click', (e) => {
     pushArtistInfo(currentSearch[e.target.id]);
     e.target.parentElement.style.display = 'none';
@@ -91,6 +93,15 @@ function showAlbums(artistId, list) {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `${release.release_date} - ${release.title}`;
                 list.append(listItem);
+                albums.push(release);
+
             }
         });
+}
+
+function showRecentAlbums() {
+    return albums.filter((album) => {
+        const year = Number(album.release_date.split('-')[0]);
+        return year >= 2020;
+    })
 }
