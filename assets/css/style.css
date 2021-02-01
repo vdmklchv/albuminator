@@ -43,3 +43,13 @@ aside label[for="search-input"] {
     display: inline-block;
 }
 
+.artist-list-item {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.artist-list-item p {
+    text-transform: uppercase;
+    margin-right: 5rem;
+}
+

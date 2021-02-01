@@ -10,24 +10,30 @@ let currentSearch = [];
 
 let albums = [];
 
+// display selected items on the left on click of Add button
 searchArtistList.addEventListener('click', (e) => {
     pushArtistInfo(currentSearch[e.target.id]);
     e.target.parentElement.style.display = 'none';
     displaySelectedItems();
 })
 
+// retrieve list of albums for entry on click of button
 chosenArtistsList.addEventListener('click', (e) => {
     if (e.target.id) {
         const albumList = document.createElement('UL');
         const artistID = selectedArtists[e.target.id.split('-')[2]].id;
-        albumList.id = artistID;
-        e.target.parentElement.append(albumList);
+        albumList.id = 'list-' + artistID;
+        if (document.querySelector(`#${albumList.id}`)) {
+            document.querySelector(`#${albumList.id}`).remove();
+        }
+
+        e.target.parentElement.parentElement.parentElement.append(albumList);
         showAlbums(artistID, albumList);
     }
 
 })
 
-
+// search artists on button click
 searchArtistButton.addEventListener('click', (e) => {
     if (searchArtistInput.value) {
         searchArtistList.innerHTML = '';
@@ -67,9 +73,9 @@ function pushArtistInfo(artist) {
 }
 
 function displaySelectedItems() {
-    chosenArtistsList.innerHTML = '';
     for (let i = 0; i < selectedArtists.length; i++) {
         const artistListItem = document.createElement('LI');
+        artistListItem.classList.add('artist-list-item');
         const artistNameParagraph = document.createElement('P');
         const artistSelectButton = document.createElement('BUTTON');
 
@@ -83,12 +89,14 @@ function displaySelectedItems() {
     }
 }
 
+//shows albums on click of
 function showAlbums(artistId, list) {
     fetch(`https://api.deezer.com/artist/${artistId}/albums`, {
         headers: { Accept: 'application/json' }
     })
         .then((response) => response.json())
         .then((data) => {
+            list.innerHTML = '';
             for (release of data.data) {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `${release.release_date} - ${release.title}`;
@@ -99,9 +107,11 @@ function showAlbums(artistId, list) {
         });
 }
 
+
+// starting logic to fetch albums of certain period (could be complimented by select or calendar)
 function showRecentAlbums() {
     return albums.filter((album) => {
         const year = Number(album.release_date.split('-')[0]);
         return year >= 2020;
-    })
+    });
 }
