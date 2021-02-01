@@ -3,7 +3,6 @@ const searchArtistButton = document.querySelector('#search-artist-button');
 const searchArtistList = document.querySelector('#search-artists-results');
 const chosenArtistsList = document.querySelector('#chosen-artists');
 
-
 const selectedArtists = [];
 
 let currentSearch = [];
@@ -12,9 +11,11 @@ let albums = [];
 
 // display selected items on the left on click of Add button
 searchArtistList.addEventListener('click', (e) => {
-    pushArtistInfo(currentSearch[e.target.id]);
-    e.target.parentElement.style.display = 'none';
-    displaySelectedItems();
+    if (e.target.id.length === 1) {
+        pushArtistInfo(currentSearch[e.target.id]);
+        e.target.parentElement.style.display = 'none';
+        displaySelectedItems();
+    }
 })
 
 // retrieve list of albums for entry on click of button
