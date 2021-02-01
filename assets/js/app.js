@@ -32,11 +32,11 @@ searchArtistButton.addEventListener('click', (e) => {
         e.preventDefault();
         const query = searchArtistInput.value;
         searchArtistInput.value = '';
-        fetch(`https://musicbrainz.org/ws/2/artist?query=${query}`, { headers: { Accept: "application/json" } })
+        fetch(`https://api.deezer.com/search/artist/?q=${query}`)
             .then((response) => response.json())
             .then((data) => {
-                showArtistSearchResults(data.artists);
-                currentSearch = data.artists;
+                showArtistSearchResults(data.data);
+                currentSearch = data.data;
             });
     }
 })
@@ -82,22 +82,15 @@ function displaySelectedItems() {
 }
 
 function showAlbums(artistId, list) {
-    fetch(`https://musicbrainz.org/ws/2/artist/${artistId}?inc=releases`, {
+    fetch(`https://api.deezer.com/artist/${artistId}/albums`, {
         headers: { Accept: 'application/json' }
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-            for (release of data.releases) {
+            for (release of data.data) {
                 const listItem = document.createElement('li');
-                listItem.innerHTML = `${release.date} - ${release.title}`;
+                listItem.innerHTML = `${release.release_date} - ${release.title}`;
                 list.append(listItem);
             }
         });
-}
-
-function displayAlbum(release, list) {
-    const listItem = document.createElement('li');
-    listItem.innerText = `${release.date} - ${release.title}`;
-    list.append(listItem);
 }
