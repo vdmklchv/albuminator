@@ -24,6 +24,7 @@ chosenArtistsList.addEventListener('click', (e) => {
     if (e.target.id) {
         const albumList = document.createElement('UL');
         const artistID = selectedArtists[e.target.id.split('-')[2]].id;
+        albumList.classList.add('list-group');
         albumList.id = 'list-' + artistID;
         if (document.querySelector(`#${albumList.id}`)) {
             document.querySelector(`#${albumList.id}`).remove();
@@ -58,7 +59,7 @@ function showArtistSearchResults(artists) {
         const artistListItem = document.createElement('LI');
         const artistNameParagraph = document.createElement('P');
         const artistSelectButton = document.createElement('BUTTON');
-        artistSelectButton.classList.add('add-button');
+        artistSelectButton.classList.add('add-button', 'btn', 'btn-primary');
         artistListItem.classList.add('artist-search-result');
         artistSelectButton.id = `${i}`;
         artistNameParagraph.innerText = artistName;
@@ -81,6 +82,8 @@ function displaySelectedItems() {
         const artistNameParagraph = document.createElement('P');
         const artistSelectButton = document.createElement('BUTTON');
 
+        artistListItem.classList.add('list-group-item');
+        artistSelectButton.classList.add('btn', 'btn-success', 'btn-sm');
         artistNameParagraph.innerText = selectedArtists[i].name;
         artistSelectButton.id = `selected-artist-${i}`;
         artistSelectButton.innerText = 'Show Albums';
