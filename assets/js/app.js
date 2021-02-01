@@ -14,6 +14,7 @@ searchArtistList.addEventListener('click', (e) => {
     if (e.target.id.length === 1) {
         pushArtistInfo(currentSearch[e.target.id]);
         e.target.parentElement.style.display = 'none';
+        chosenArtistsList.innerHTML = '';
         displaySelectedItems();
     }
 })
