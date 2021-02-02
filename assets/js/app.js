@@ -51,9 +51,9 @@ chosenArtistsList.addEventListener('click', (e) => {
 
 // search artists on button click
 searchArtistButton.addEventListener('click', (e) => {
+    e.preventDefault();
     if (searchArtistInput.value) {
         searchArtistList.innerHTML = '';
-        e.preventDefault();
         const query = searchArtistInput.value;
         searchArtistInput.value = '';
         fetch(`https://api.deezer.com/search/artist/?q=${query}`)
@@ -113,13 +113,17 @@ function showAlbums(artistId, list) {
         .then((response) => response.json())
         .then((data) => {
             list.innerHTML = '';
-            for (release of data.data) {
-                const listItem = document.createElement('li');
-                listItem.classList.add('list-group-item');
-                listItem.innerHTML = `${release.release_date} - ${release.title}`;
-                list.append(listItem);
+            for (let release of data.data) {
                 albums.push(release);
             }
+            albums.sort((a, b) => { return new Date(b.release_date) - new Date(a.release_date) });
+            for (let album of albums) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.innerHTML = `${album.release_date} - ${album.title}`;
+                list.append(listItem);
+            }
+
         });
 }
 
